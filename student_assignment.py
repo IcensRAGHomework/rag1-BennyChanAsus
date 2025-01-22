@@ -71,27 +71,6 @@ def generate_hw01(question):
     
     # print(result)
     return json.dumps(result, ensure_ascii=False, indent=2)
-
-
-
-    # joke_query = "Tell me a joke."
-
-    # class Joke(BaseModel):
-    #     setup: str = Field(description="question to set up a joke")
-    #     punchline: str = Field(description="answer to resolve the joke")
-
-    # # Set up a parser + inject instructions into the prompt template.
-    # parser = JsonOutputParser(pydantic_object=Joke)
-
-    # prompt = PromptTemplate(
-    #     template="Answer the user query.\n{format_instructions}\n",
-    #     input_variables=["query"],
-    #     partial_variables={"format_instructions": parser.get_format_instructions()},
-    # )
-
-    # chain = prompt | llm | parser
-
-    # print(chain.invoke({"query": joke_query}))
     # return " "
     
 def generate_hw02(question):
@@ -121,6 +100,6 @@ def demo(question):
     
     return response
 
-if __name__ == "__main__":
-    # print("asd")
-    print(generate_hw01("2023年台灣10月紀念日有哪些?"))
+# if __name__ == "__main__":
+#     # print("asd")
+#     print(generate_hw01("2023年台灣10月紀念日有哪些?"))
