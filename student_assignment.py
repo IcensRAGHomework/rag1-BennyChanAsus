@@ -24,48 +24,48 @@ def generate_hw01(question):
             temperature=gpt_config['temperature']
     )
 
-    class Holiday(BaseModel):
-        date: str = Field(description="年份-月份-日期")
-        name: str = Field(description="紀念日名稱")
-    parser = JsonOutputParser(pydantic_object=Holiday)
+    # class Holiday(BaseModel):
+    #     date: str = Field(description="年份-月份-日期")
+    #     name: str = Field(description="紀念日名稱")
+    # parser = JsonOutputParser(pydantic_object=Holiday)
 
-    prompt = PromptTemplate(
-        template="列出{year}年台灣{month}月的所有紀念日，並以JSON格式呈現於最前面，每個紀念日包含日期和名稱，例如：{{'date': '年份-月份-日期', 'name': '紀念日名稱'}}。\n{format_instructions}",
-        input_variables=["year", "month"],
-        partial_variables={"format_instructions": parser.get_format_instructions()}
-    )
+    # prompt = PromptTemplate(
+    #     template="列出{year}年台灣{month}月的所有紀念日，並以JSON格式呈現於最前面，每個紀念日包含日期和名稱，例如：{{'date': '年份-月份-日期', 'name': '紀念日名稱'}}。\n{format_instructions}",
+    #     input_variables=["year", "month"],
+    #     partial_variables={"format_instructions": parser.get_format_instructions()}
+    # )
 
 
-    chain = prompt | llm | parser
-
-    match = re.search(r'(\d{4})年台灣(\d{1,2})月', question)
-    if match:
-        year = match.group(1)
-        month = match.group(2).zfill(2)
-        #print(year)
-        #print(month)
-
-        respond = chain.invoke({"year": year, "month": month})
-        # print(respond)
-        result = {"Result": respond}
-    else:
-        result = {"Result": []}
+    # chain = prompt | llm | parser
 
     # match = re.search(r'(\d{4})年台灣(\d{1,2})月', question)
     # if match:
     #     year = match.group(1)
-    #     month = match.group(2).zfill(2) 
+    #     month = match.group(2).zfill(2)
     #     #print(year)
     #     #print(month)
-    #     prompt = f"列出{year}年台灣{month}月的所有紀念日，並以JSON格式呈現，每個紀念日包含日期和名稱，例如：{{'date': '年份-月份-日期', 'name': '紀念日名稱'}}。"
-    #     response = llm.invoke(prompt)
 
-    #     json_parser = JsonOutputParser()
-    #     json_output = json_parser.invoke(response)
-    #     # print(response)
-    #     result = {"Result": json_output}
+    #     respond = chain.invoke({"year": year, "month": month})
+    #     # print(respond)
+    #     result = {"Result": respond}
     # else:
     #     result = {"Result": []}
+
+    match = re.search(r'(\d{4})年台灣(\d{1,2})月', question)
+    if match:
+        year = match.group(1)
+        month = match.group(2).zfill(2) 
+        #print(year)
+        #print(month)
+        prompt = f"列出{year}年台灣{month}月的所有紀念日，並以JSON格式呈現，每個紀念日包含日期和名稱，例如：{{'date': '年份-月份-日期', 'name': '紀念日名稱'}}。"
+        response = llm.invoke(prompt)
+
+        json_parser = JsonOutputParser()
+        json_output = json_parser.invoke(response)
+        # print(response)
+        result = {"Result": json_output}
+    else:
+        result = {"Result": []}
     
     # print(result)
     return json.dumps(result, ensure_ascii=False, indent=2)
