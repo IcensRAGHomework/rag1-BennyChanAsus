@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 
 import re
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import AzureChatOpenAI
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
@@ -29,7 +28,6 @@ def generate_hw01(question):
         date: str = Field(description="年份-月份-日期")
         name: str = Field(description="紀念日名稱")
     parser = JsonOutputParser(pydantic_object=Holiday)
-    # parser = StrOutputParser()
 
     prompt = PromptTemplate(
         template="列出{year}年台灣{month}月的所有紀念日，並以JSON格式呈現於最前面，每個紀念日包含日期和名稱，例如：{{'date': '年份-月份-日期', 'name': '紀念日名稱'}}。\n{format_instructions}",
@@ -64,7 +62,7 @@ def generate_hw01(question):
 
     #     json_parser = JsonOutputParser()
     #     json_output = json_parser.invoke(response)
-    #     print(response)
+    #     # print(response)
     #     result = {"Result": json_output}
     # else:
     #     result = {"Result": []}
@@ -100,6 +98,5 @@ def demo(question):
     
     return response
 
-# if __name__ == "__main__":
-#     # print("asd")
-#     print(generate_hw01("2023年台灣10月紀念日有哪些?"))
+if __name__ == "__main__":
+    print(generate_hw01("2006年台灣3月紀念日有哪些?"))
